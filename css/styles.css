@@ -1,0 +1,580 @@
+/* ーーーーー header ここから ーーーーー */
+header {
+    max-width: 100%; /* 最大幅を設定 */
+    height: auto; /* 高さを設定 */
+    background-color: rgb(139, 205, 205); /* 背景色 */
+    display: flex; /* フレックスボックスレイアウトを使用 */
+    flex-direction: column; /* 子要素を縦に配置 */
+    justify-content: flex-start; /* 上から順に配置 */
+    padding: 10px 20px; /* 上下、左右のパディング */
+    position: relative; /* 相対位置を設定 */
+}
+
+header h1 {
+    margin: 0; /* マージンをリセット */
+    text-align: center; /* テキストを中央揃え */
+    width: 100%; /* 幅を設定 */
+}
+
+/* ヘッダーの下部（リンクと検索フォーム）のスタイル */
+.header-bottom {
+    display: flex; /* フレックスボックスレイアウトを使用 */
+    justify-content: space-between; /* 左右に均等に配置 */
+    align-items: center; /* 垂直方向の中央揃え */
+    width: 100%; /* 幅を100%に設定 */
+    margin-top: 10px; /* 上部にマージン */
+}
+
+header a {
+    padding: 5px 10px;
+    font-size: 25px; /* フォントサイズを設定 */
+    color: #000000; /* テキストの色を設定 */
+    text-decoration: none; /* 下線を消す */
+}
+
+/* 検索フォームのコンテナのスタイル */
+.container {
+    display: flex;
+    align-items: center;
+}
+
+/* 検索フォームのスタイル */
+.container form {
+    display: flex; /* フレックスボックスレイアウトを使用 */
+}
+
+/* 検索入力欄のスタイル */
+.container input{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+    width: 200px;
+}
+
+/* 検索ボタンのスタイル */
+.btn-container{
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.change-password{
+    font-size: 10px;
+}
+
+/* ーーーーー footer ここから ーーーーー */
+footer {
+    background-color: rgb(139, 205, 205); /* 背景色 */
+    color: rgb(0, 0, 0); /* テキストの色 */
+    text-align: center; /* テキストを中央揃え */
+    padding: 20px 0; /* 上下のパディング */
+    margin: 20px 10px;
+    position: relative; /* 位置を相対的に */
+    bottom: 0; /* 下部に配置 */
+    width: 100%; /* 幅を100%に */
+}
+
+footer p {
+    margin: 0; /* マージンをリセット */
+}
+
+footer nav ul {
+    list-style: none; /* リストスタイルをなしに */
+    padding: 0; /* パディングをリセット */
+    margin: 10px 0 0; /* マージンを設定 */
+    display: flex; /* フレックスボックスで横並び */
+    justify-content: center; /* 中央揃え */
+}
+
+footer nav ul li {
+    margin: 0 15px; /* リストアイテムの左右マージン */
+}
+
+footer nav ul li a {
+    color: rgb(0, 0, 0); /* リンクの色 */
+    text-decoration: none; /* 下線を消す */
+}
+
+/* ホバー時に下線を表示 */
+footer nav ul li a:hover {
+    text-decoration: underline; 
+}
+
+/* ーーーーー 共通部分 ここから ーーーーー */
+main {
+    color: #ffffff;
+    background-color: #080808;
+    margin: 20px 5%;
+    padding: 20px 10px;
+
+}
+
+.form-container {
+    background-color: #5c5c5c;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 30%;
+}
+
+label {
+    width: 100px; /* ラベルの幅を固定 */
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    flex-grow: 1; /* 入力欄の幅を自動調整 */
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* ボタンの共通スタイル */
+.btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em; /* 相対フォントサイズ */
+    padding: 10px 15px;
+    flex-shrink: 0; /* ボタンが縮まないように */
+    margin-top: 15px; /* 新規登録ボタンの上にスペースを追加 */
+    width: 100%; /* ボタンを全幅にする */
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-second {
+    background-color: #6c757d;
+}
+
+.btn-second:hover {
+    background-color: #5a6268;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.btn-full-width {
+    width: 100%;
+}
+
+/* 詳細ボタンと削除ボタンのスタイルを統一 */
+.btn-detail,
+.btn-delete{
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    color: white;
+    width: 60px; /* ボタンの幅を固定 */
+    text-align: center;
+}
+
+/* フォーム要素の共通スタイル */
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #222;
+    color: #fff;
+}
+
+.form-textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* フォームグループのスタイル */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* アクションボタンのコンテナ */
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* エラーメッセージのスタイル */
+.error-message {
+    color: #dc3545;
+    margin-bottom: 15px;
+}
+
+/* ページタイトルのスタイル */
+.page-title {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* 質問回答入力 */
+input-group {
+    margin-bottom: 15px;
+}
+
+/* 質問回答入力ガイド */
+input-label {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+/* ーーーーー index ここから ーーーーー */
+
+
+/* ーーーーー question ここから ーーーーー */
+.question-page {
+    color: #ffffff;
+    background-color: #080808;
+    margin: 20px 5%;
+    padding: 20px 10px;
+}
+
+.question-title {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.question-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.question-list {
+    margin-top: 20px;
+}
+
+.question-item {
+    background-color: #3a3a3a;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.question-item-title {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.question-item-date {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+.question-item-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.question-item-actions form {
+    margin-right: 10px;
+}
+
+
+.btn-like, .btn-liked {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.btn-like {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.btn-liked {
+    background-color: #ff69b4;
+    color: white;
+}
+
+.btn-good {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100px; /* ボタンの幅を固定 */
+    text-align: center;
+}
+
+.question-item-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.question-item-actions form {
+    margin: 0;
+}
+
+/* 回答数の表示 */
+.question-item-answers {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+/* ーーーーー detail ここから ーーーーー */
+
+.detail-title {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.detail-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.detail-answer-action {
+    margin-top: 20px;
+    width: 100%; /* 親要素の幅を100%に設定 */
+}
+
+.detail-question {
+    background-color: #3a3a3a;
+    padding: 20px;
+    margin: 3% 3% 20px 3%;
+    border-radius: 8px;
+}
+
+.detail-question-title {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.detail-question-date,
+.detail-answer-date {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+.detail-answers {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 3%;
+    margin-left: 15%; /* 左側を凹ませる */
+}
+
+.detail-answers-title {
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.detail-answer-item {
+    background-color: #3a3a3a;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.detail-answer-item:last-child {
+    margin-bottom: 0;
+}
+
+.detail-answer-name {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.detail-login-form {
+    margin: 0;
+}
+
+/* ーーーーー questionInput ここから ーーーーー */
+.question-input-page {
+    color: #ffffff;
+    background-color: #080808;
+    margin: 20px 5%;
+    padding: 20px 10px;
+}
+
+.question-input-title {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.question-input-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.question-input-textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #222;
+    color: #fff;
+    font-size: 1em;
+    min-height: 150px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.question-input-submit {
+    margin-top: 20px;
+}
+
+/* ーーーーー answerInput ここから ーーーーー */
+.answer-input-page {
+    color: #ffffff;
+    background-color: #080808;
+    margin: 20px 5%;
+    padding: 20px 10px;
+}
+
+.answer-input-title {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.answer-input-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.answer-input-question {
+    background-color: #3a3a3a;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.answer-input-question-title {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.answer-input-question-author,
+.answer-input-question-date {
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+.answer-input-form {
+    background-color: #3a3a3a;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.answer-input-textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #222;
+    color: #fff;
+    font-size: 1em;
+    min-height: 150px;
+    resize: vertical;
+}
+
+.answer-input-submit {
+    margin-top: 20px;
+}
+
+.answer-input-answers {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 3%;
+    margin-left: 15%; /* 左側を凹ませる */
+}
+
+.answer-input-answers-title {
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.answer-input-answer-item {
+    background-color: #3a3a3a;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.answer-input-answer-item:last-child {
+    margin-bottom: 0;
+}
+
+.answer-input-answer-name {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.answer-input-answer-date {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+.answer-input-no-answers {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* ーーーーー changePassword ここから ーーーーー */
+.success-message {
+    color: green;
+    margin-bottom: 15px;
+}
+
+/* ーーーーー レスポンシブデザイン ここから ーーーーー */
+@media (max-width: 480px) {
+    .btn {
+        font-size: 0.8em;
+        /* 小さい画面でフォントサイズを縮小 */
+    }
+}
+
