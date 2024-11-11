@@ -1,23 +1,18 @@
 <?php
 // header.php
 // このファイルはウェブサイトのヘッダー部分を定義します
-
 declare(strict_types=1);
-
 // 検索クエリの取得
 // GETパラメータから'search'を取得し、存在しない場合は空文字を設定
 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <!-- スタイルシートの読み込み -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <header>
     <!-- サイトのメインページへのリンク -->
     <a href="index.php">
@@ -35,7 +30,6 @@ $search_query = isset($_GET['search']) ? $_GET['search'] : '';
             </form>
         </div>
     </div>
-
     <?php if (isset($_SESSION['user_id'])): ?>
         <!-- ログインしているユーザーにのみパスワード変更リンクを表示 -->
         <p class="change-password"><a href="changePassword.php">パスワード変更</a></p>

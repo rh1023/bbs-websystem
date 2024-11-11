@@ -1,14 +1,14 @@
 <?php
+mb_internal_encoding("UTF-8");
+header('Content-Type: text/html; charset=utf-8');
+
 // index.php
 // ログインを促すための画面。GET時は画面表示、POST時はログイン判定で画面遷移する。
-
 session_start();
-require 'includes/functions.php';
 include 'includes/header.php';
-
+require 'includes/functions.php';
 $err = '';
 $page = isset($_GET['page']) ? $_GET['page'] : '';
-
 // ログアウト処理
 if (isset($_POST['logout'])) {
     session_unset();
@@ -18,7 +18,6 @@ if (isset($_POST['logout'])) {
     header('Location: index.php');
     exit;
 }
-
 // 自動ログイン処理
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     $token = $_COOKIE['remember_me'];
@@ -32,16 +31,13 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         setcookie('remember_me', $newToken, time() + (7 * 24 * 60 * 60), '/', '', true, true);
     }
 }
-
 // ログイン状態をチェック
 $isLoggedIn = isset($_SESSION['user_id']);
-
 // POSTリクエストが送信された場合、ログイン処理を行う
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$isLoggedIn) {
     $userId = isset($_POST['userId']) ? $_POST['userId'] : '';
     $userPw = isset($_POST['userPw']) ? $_POST['userPw'] : '';
     $rememberMe = isset($_POST['remember_me']) ? true : false;
-
     if (empty($userId) || empty($userPw)) {
         $err = 'ユーザーIDとパスワードを入力してください。';
     } else {
@@ -52,13 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$isLoggedIn) {
                     // セッションにユーザー情報を設定
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['user_name'] = $user['name'];
-                    
                     // 自動ログイン処理
                     if ($rememberMe) {
                         $token = createRememberToken($user['id']);
                         setcookie('remember_me', $token, time() + (7 * 24 * 60 * 60), '/', '', true, true);
                     }
-                    
                     header('Location: question.php');
                     exit;
                 }
@@ -71,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$isLoggedIn) {
     }
 }
 ?>
-
 <main>
     <?php if ($isLoggedIn): ?>
         <!-- ログイン済みの場合の表示 -->

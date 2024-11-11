@@ -1,21 +1,13 @@
 <?php
-//functions.php
-
-// データベース接続情報
-// XAMMP使用時のデータベース構築
-// const DB_HOST = '127.0.0.1';  // データベースサーバーのホスト名またはIPアドレス
-// const DB_NAME = 'QAbbs';      // 使用するデータベース名
-// const DB_USER = 'root';       // データベースへのアクセスに使用するユーザー名
-// const DB_PASS = '';           // データベースへのアクセスに使用するパスワード（空の場合はセキュリティ上のリスクがあります）
-// const DB_CHARSET = 'utf8mb4'; // データベースの文字セット（絵文字対応のUTF-8）
+// functions.php
+mb_internal_encoding("UTF-8");
 
 // データベース接続情報
 const DB_HOST = 'db';              // Docker Composeで設定したMySQLのサービス名
-const DB_NAME = 'QAbbs';            // データベース名
-const DB_USER = 'user';             // MySQLのユーザー名
-const DB_PASS = 'user_password';    // MySQLのパスワード
-const DB_CHARSET = 'utf8mb4';       // 文字セット
-
+const DB_NAME = 'QAbbs';           // データベース名
+const DB_USER = 'user';            // MySQLのユーザー名
+const DB_PASS = 'user_password';   // MySQLのパスワード
+const DB_CHARSET = 'utf8mb4';      // 文字セット
 
 // グローバル変数としてPDOオブジェクトを宣言し、データベース接続を確立
 global $pdo;
@@ -30,29 +22,26 @@ $pdo = connect();
 function connect(): PDO
 {
     try {
-        // PDOオブジェクトを作成し、データベースに接続
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
         $pdo = new PDO($dsn, DB_USER, DB_PASS);
 
-        //echo "データベース接続に成功しました！"; // 追加のデバッグメッセージ
-        
-        // PDOの動作設定
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);        // エラーモードを例外に設定
-        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);   // デフォルトのフェッチモードを連想配列に設定
-        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);                // プリペアドステートメントのエミュレーションを無効化
+        mb_internal_encoding("UTF-8");
+        mb_http_output("UTF-8");
 
-        // アップロードディレクトリの作成と権限設定
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
         $upload_dir = __DIR__ . '/../uploads/';
         if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0755, true);  // ディレクトリが存在しない場合、作成
+            mkdir($upload_dir, 0755, true);
         }
         if (!is_writable($upload_dir)) {
-            chmod($upload_dir, 0755);        // ディレクトリが書き込み可能でない場合、権限を変更
+            chmod($upload_dir, 0755);
         }
 
         return $pdo;
     } catch (PDOException $e) {
-        // 接続エラーの場合、ログに記録し例外をスロー
         error_log('Connection failed: ' . $e->getMessage());
         throw new Exception('データベース接続エラー');
     }
@@ -139,10 +128,11 @@ function getQuestion(): array|false
  * @param array|null $image アップロードされた画像情報
  * @return bool 追加成功時はtrue、失敗時はfalse
  */
-function addQuestion(int $userId, string $question, bool $isAnonymous = false, $image = null): bool {
+function addQuestion(int $userId, string $question, bool $isAnonymous = false, $image = null): bool
+{
     $pdo = connect();
     $pdo->beginTransaction();
-    
+
     try {
         $image_path = null;
         if ($image && $image['error'] == UPLOAD_ERR_OK) {
@@ -159,11 +149,11 @@ function addQuestion(int $userId, string $question, bool $isAnonymous = false, $
             'isAnonymous' => $isAnonymous ? 1 : 0,
             'image_path' => $image_path
         ]);
-        
+
         if (!$result) {
             throw new Exception("Failed to insert question into database");
         }
-        
+
         $pdo->commit();
         return true;
     } catch (Exception $e) {
@@ -225,10 +215,10 @@ function getQuestionById(int $questionId): array|false
     ');
     $stmt->execute(['questionId' => $questionId]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     // echo "Debug: getQuestionById result:<br>";
     // var_dump($result);
-    
+
     return $result ?: false;
 }
 
@@ -258,7 +248,8 @@ function getAnswersByQuestionId(int $questionId): array|false
  * @param int $questionId 質問のID
  * @return int 回答数
  */
-function getAnswerCount($questionId) {
+function getAnswerCount($questionId)
+{
     global $pdo;
     $sql = "SELECT COUNT(*) FROM answers WHERE questionId = ?";
     $stmt = $pdo->prepare($sql);
@@ -309,7 +300,8 @@ function deleteAnswer(int $answerId): bool
  * @return array 検索結果の配列
  * @throws Exception データベース接続エラー時
  */
-function searchQuestions($pdo, $query, $debug = false) {
+function searchQuestions($pdo, $query, $debug = false)
+{
     if (!$pdo) {
         throw new Exception('データベース接続が確立されていません。');
     }
@@ -321,7 +313,7 @@ function searchQuestions($pdo, $query, $debug = false) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['query' => '%' . $query . '%']);
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     // デバッグ出力
     if ($debug) {
         echo "Search query: " . $query . "<br>";
@@ -339,7 +331,8 @@ function searchQuestions($pdo, $query, $debug = false) {
  * @param int $userId ユーザーID
  * @return string 生成されたトークン
  */
-function createRememberToken($userId) {
+function createRememberToken($userId)
+{
     global $pdo;
     $token = bin2hex(random_bytes(32)); // セキュアなランダムトークンを生成
     $expires = date('Y-m-d H:i:s', strtotime('+1 week'));
@@ -354,7 +347,8 @@ function createRememberToken($userId) {
  * @param string $token 記憶トークン
  * @return array|false ユーザー情報の連想配列、失敗時はfalse
  */
-function getUserByRememberToken($token) {
+function getUserByRememberToken($token)
+{
     global $pdo;
     $stmt = $pdo->prepare("
         SELECT u.* 
@@ -372,11 +366,12 @@ function getUserByRememberToken($token) {
  * @param int $userId ユーザーID
  * @return string 新しく生成されたトークン
  */
-function updateRememberToken($userId) {
+function updateRememberToken($userId)
+{
     global $pdo;
     $token = bin2hex(random_bytes(32));
     $expires = date('Y-m-d H:i:s', strtotime('+1 week'));
-    
+
     $stmt = $pdo->prepare("
         UPDATE remember_tokens 
         SET token = ?, expires = ? 
@@ -393,7 +388,8 @@ function updateRememberToken($userId) {
  * @param int $questionId 質問ID
  * @return bool 「いいね」している場合はtrue、していない場合はfalse
  */
-function hasUserLiked($userId, $questionId) {
+function hasUserLiked($userId, $questionId)
+{
     global $pdo;
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE user_id = ? AND question_id = ?");
     $stmt->execute([$userId, $questionId]);
@@ -406,7 +402,8 @@ function hasUserLiked($userId, $questionId) {
  * @param int $questionId 質問ID
  * @return int 「いいね」の数
  */
-function getLikeCount($questionId) {
+function getLikeCount($questionId)
+{
     global $pdo;
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE question_id = ?");
     $stmt->execute([$questionId]);
@@ -420,7 +417,8 @@ function getLikeCount($questionId) {
  * @param int $questionId 質問ID
  * @return bool 追加成功時はtrue、失敗時はfalse
  */
-function addLike($userId, $questionId) {
+function addLike($userId, $questionId)
+{
     global $pdo;
     $stmt = $pdo->prepare("INSERT IGNORE INTO likes (user_id, question_id) VALUES (?, ?)");
     return $stmt->execute([$userId, $questionId]);
@@ -433,7 +431,8 @@ function addLike($userId, $questionId) {
  * @param int $questionId 質問ID
  * @return bool 削除成功時はtrue、失敗時はfalse
  */
-function removeLike($userId, $questionId) {
+function removeLike($userId, $questionId)
+{
     global $pdo;
     $stmt = $pdo->prepare("DELETE FROM likes WHERE user_id = ? AND question_id = ?");
     return $stmt->execute([$userId, $questionId]);
@@ -447,19 +446,20 @@ function removeLike($userId, $questionId) {
  * @param string $newPassword 新しいパスワード
  * @return bool 変更成功時はtrue、失敗時はfalse
  */
-function changePassword($userId, $currentPassword, $newPassword) {
+function changePassword($userId, $currentPassword, $newPassword)
+{
     global $pdo;
-    
+
     try {
         // 現在のパスワードを確認
         $stmt = $pdo->prepare("SELECT password FROM users WHERE id = ?");
         $stmt->execute([$userId]);
         $user = $stmt->fetch();
-        
+
         if (!$user || $user['password'] !== $currentPassword) {
             return false;
         }
-        
+
         // パスワードを更新
         $stmt = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
         $result = $stmt->execute([$newPassword, $userId]);
@@ -477,9 +477,10 @@ function changePassword($userId, $currentPassword, $newPassword) {
  * @param array $file $_FILES配列の要素
  * @return string|false アップロードされた画像のパス、失敗時はfalse
  */
-function uploadImage($file) {
+function uploadImage($file)
+{
     $target_dir = __DIR__ . '/../uploads/';
-    
+
     // ディレクトリが存在しない場合は作成
     if (!file_exists($target_dir)) {
         if (!mkdir($target_dir, 0755, true)) {
@@ -487,38 +488,38 @@ function uploadImage($file) {
             return false;
         }
     }
-    
+
     $imageFileType = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
-    
+
     // 画像ファイルかどうかをチェック
     $check = getimagesize($file["tmp_name"]);
-    if($check === false) {
+    if ($check === false) {
         error_log("Uploaded file is not an image");
         return false;
     }
-    
+
     // ファイルサイズをチェック (5MB制限)
     if ($file["size"] > 5000000) {
         error_log("File is too large");
         return false;
     }
-    
+
     // 特定のファイル形式のみを許可
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
         error_log("Invalid file format");
         return false;
     }
-    
+
     // ユニークなファイル名を生成
     $new_filename = uniqid() . '_' . bin2hex(random_bytes(8)) . '.' . $imageFileType;
     $target_file = $target_dir . $new_filename;
-    
+
     // 一時ファイルが読み取り可能かを確認
     if (!is_readable($file["tmp_name"])) {
         error_log("Temporary file is not readable");
         return false;
     }
-    
+
     if (move_uploaded_file($file["tmp_name"], $target_file)) {
         // アップロードされたファイルの権限を設定
         // chmod($target_file, 0644);
@@ -543,7 +544,8 @@ function uploadImage($file) {
  * @param int $questionId 質問ID
  * @return bool クローズ成功時はtrue、失敗時はfalse
  */
-function closeQuestion(int $questionId): bool {
+function closeQuestion(int $questionId): bool
+{
     $pdo = connect();
     $stmt = $pdo->prepare('UPDATE questions SET is_closed = TRUE WHERE id = :questionId');
     return $stmt->execute(['questionId' => $questionId]);
@@ -555,7 +557,8 @@ function closeQuestion(int $questionId): bool {
  * @param int $questionId 質問ID
  * @return bool クローズされている場合はtrue、そうでない場合はfalse
  */
-function isQuestionClosed(int $questionId): bool {
+function isQuestionClosed(int $questionId): bool
+{
     $pdo = connect();
     $stmt = $pdo->prepare('SELECT is_closed FROM questions WHERE id = :questionId');
     $stmt->execute(['questionId' => $questionId]);
@@ -569,12 +572,11 @@ function isQuestionClosed(int $questionId): bool {
  * @param int $userId ユーザーID
  * @return bool 所有者の場合はtrue、そうでない場合はfalse
  */
-function isQuestionOwner($questionId, $userId) {
+function isQuestionOwner($questionId, $userId)
+{
     $pdo = connect();
     $stmt = $pdo->prepare('SELECT userId FROM questions WHERE id = :questionId');
     $stmt->execute(['questionId' => $questionId]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result && $result['userId'] == $userId;
 }
-
-?>

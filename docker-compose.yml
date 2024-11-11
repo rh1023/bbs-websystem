@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  php-apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"  # ブラウザでアプリケーションにアクセスするポート
+    volumes:
+      - .:/var/www/html  # ホストとコンテナ間でファイルを共有
+    depends_on:
+      - db  # データベースが準備完了してからphp-apacheを起動
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password  # ルートパスワードを設定
+      MYSQL_DATABASE: QAbbs  # 自動的に作成するデータベース名
+      MYSQL_USER: user  # MySQLのユーザー名
+      MYSQL_PASSWORD: user_password  # MySQLのパスワード
+      TZ: 'Asia/Tokyo'  # タイムゾーンの設定
+    ports:
+      - "3306:3306"  # MySQLデータベースのポート
+    volumes:
+      - db_data:/var/lib/mysql  # データを永続化
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # 初期化SQLファイル
+
+volumes:
+  db_data:
