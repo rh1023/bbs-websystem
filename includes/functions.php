@@ -2,12 +2,20 @@
 //functions.php
 
 // データベース接続情報
-// これらの定数は、データベースへの接続に必要な情報を保持しています
-const DB_HOST = '127.0.0.1';  // データベースサーバーのホスト名またはIPアドレス
-const DB_NAME = 'QAbbs';      // 使用するデータベース名
-const DB_USER = 'root';       // データベースへのアクセスに使用するユーザー名
-const DB_PASS = '';           // データベースへのアクセスに使用するパスワード（空の場合はセキュリティ上のリスクがあります）
-const DB_CHARSET = 'utf8mb4'; // データベースの文字セット（絵文字対応のUTF-8）
+// XAMMP使用時のデータベース構築
+// const DB_HOST = '127.0.0.1';  // データベースサーバーのホスト名またはIPアドレス
+// const DB_NAME = 'QAbbs';      // 使用するデータベース名
+// const DB_USER = 'root';       // データベースへのアクセスに使用するユーザー名
+// const DB_PASS = '';           // データベースへのアクセスに使用するパスワード（空の場合はセキュリティ上のリスクがあります）
+// const DB_CHARSET = 'utf8mb4'; // データベースの文字セット（絵文字対応のUTF-8）
+
+// データベース接続情報
+const DB_HOST = 'db';              // Docker Composeで設定したMySQLのサービス名
+const DB_NAME = 'QAbbs';            // データベース名
+const DB_USER = 'user';             // MySQLのユーザー名
+const DB_PASS = 'user_password';    // MySQLのパスワード
+const DB_CHARSET = 'utf8mb4';       // 文字セット
+
 
 // グローバル変数としてPDOオブジェクトを宣言し、データベース接続を確立
 global $pdo;
@@ -25,6 +33,8 @@ function connect(): PDO
         // PDOオブジェクトを作成し、データベースに接続
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
         $pdo = new PDO($dsn, DB_USER, DB_PASS);
+
+        //echo "データベース接続に成功しました！"; // 追加のデバッグメッセージ
         
         // PDOの動作設定
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);        // エラーモードを例外に設定
