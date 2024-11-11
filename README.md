@@ -1,3 +1,7 @@
+2024/11/11　環境をXAMMPで構築していたものをDockerに変更
+functions.phpを変更
+
+
 # bbs-websystem
 
 目的  
